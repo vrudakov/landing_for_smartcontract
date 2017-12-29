@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+
+
+    <link rel="stylesheet" type="text/css" href="coursetro.css">
+
+</head>
+<body>
+    <div class="container">
+
+        <h1>Cancercoin ICO info page</h1>
+
+        <h2 id="instructor"></h2>
+
+        <label for="name" class="col-lg-2 control-label">Instructor Age</label>
+        <input id="age" type="text">
+
+        <!-- <button id="button">Update Instructor</button> -->
+
+
+    </div>
+
+    <div class="container">
+        <ul class="collection">
+          <li class="collection-item" id="amountRaised"></li>
+          <li class="collection-item" id="owner"></li>
+          <li class="collection-item" id="contracAdress">Contract adress 0xF3D0692AE752EceF95017EaFA3acdeB3ab280B4f</li>
+          <li class="collection-item" id="RisedInUSD"></li>
+          <li class="collection-item">
+            <div class="container">
+              <label for="balance" class="col-lg-2 control-label">My balance</label>
+              <input id="balance" type="text">
+            </div>
+           </li>
+        </ul>
+
+        <div class="progress">
+          <div class="determinate" id="filler"></div>
+          <div id="percents" style="text-align: center; color: #fff; position: relative; top: 9px; padding: 0 10px;">10%</div>
+        </div>
+
+    </div>
+
+
+
+    <!-- add web3 -->
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+    <!-- add jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.min.js"></script>
+    
+    <style type="text/css">
+        .progress {
+            height: 40px;
+            border-radius: 25px;
+        }
+    </style>
+
+    <script>
+
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            // set the provider you want from Web3.providers
+            web3 = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/"));
+        }
+
+        web3.eth.defultAccount = web3.eth.accounts[0];
+
+        var adress = '0x54a52e05eF0Babd0e627BCe2D99F4B0D0F526DB7';
+        var abi = [{"constant":true,"inputs":[],"name":"crowdsaleSuccess","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"withdrawalOwner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"deadline","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"beneficiary","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tokenReward","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"amountRaised","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"price","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"crowdsaleClosed","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"statement","type":"bool"}],"name":"goalManagment","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"withdrawalMoneyBack","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"addressOfTokenUsedAsReward","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"recipient","type":"address"},{"indexed":false,"name":"totalAmountRaised","type":"uint256"},{"indexed":false,"name":"crowdsaleSuccess","type":"bool"}],"name":"GoalReached","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"backer","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"isContribution","type":"bool"}],"name":"FundTransfer","type":"event"}];
+
+        var Contract = web3.eth.contract(abi);
+
+        var instance = Contract.at('0xF3D0692AE752EceF95017EaFA3acdeB3ab280B4f');
+
+        console.log(instance.amountRaised());
+
+        $("#amountRaised").html('Amount Raised '+instance.amountRaised()+' ETH');
+        $("#owner").html('Owner '+instance.beneficiary());
+
+
+        $.get("https://api.coinmarketcap.com/v1/ticker/ethereum/", function(data, status) {
+            console.log(instance.amountRaised()['c']);
+            var result = data[0]['price_usd'] * instance.amountRaised()['c'][0] / 1000;
+
+            console.log(instance.amountRaised()['c']);
+            console.log(result);
+            var proc = (result * 100) / 360000;
+            $('#RisedInUSD').html(result+'$');
+            $('#filler').width(proc +'%');
+            $('#percents').html(proc +'%');
+        });
+    </script>
+
+</body>
+</html>

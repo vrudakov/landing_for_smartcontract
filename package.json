@@ -1,0 +1,17 @@
+{
+  "name": "web3_ico",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "ethereumjs-abi": "^0.6.5",
+    "materialize-css": "^0.100.2",
+    "materialize-js": "^1.0.0",
+    "web3": "github:ethereum/web3.js"
+  }
+}

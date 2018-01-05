@@ -33,11 +33,19 @@
           <li class="collection-item" id="contracAdress">Contract adress 0xF3D0692AE752EceF95017EaFA3acdeB3ab280B4f</li>
           <li class="collection-item" id="RisedInUSD"></li>
           <li class="collection-item">
-            <div class="container">
-              <label for="balance" class="col-lg-2 control-label">My balance</label>
-              <input id="balance" type="text">
+            <div class="row">
+              <div class="col s12">
+              Сheck your balance:
+                <div class="input-field inline">
+                  <input id="balance" type="text" class="validate">
+                  <label for="balance" data-error="wrong" data-success="right">Your address</label>
+                  <div class="col s3 push-s9">
+                    <a id="button" class="waves-effect waves-light btn">button</a>
+                  </div>
+                </div>
+              </div>
             </div>
-           </li>
+          </li>
         </ul>
 
         <div class="progress">
@@ -49,10 +57,10 @@
 
 
 
-    <!-- add web3 -->
+    <!-- Add web3 -->
     <script src="./node_modules/web3/dist/web3.min.js"></script>
-    <!-- add jQuery -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!-- Add jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
@@ -87,14 +95,19 @@
 
         console.log(instance.amountRaised());
 
-        $("#amountRaised").html('Amount Raised '+instance.amountRaised()+' ETH');
+        let total = instance.amountRaised() / 1000000000000000000;
+
+        $("#amountRaised").html('Amount Raised '+ total +' ETH');
+
+
         $("#owner").html('Owner '+instance.beneficiary());
 
 
         $.get("https://api.coinmarketcap.com/v1/ticker/ethereum/", function(data, status) {
             console.log(instance.amountRaised()['c']);
-            var result = data[0]['price_usd'] * instance.amountRaised()['c'][0] / 1000;
+            var result = data[0]['price_usd'] * total;
 
+            console.log(data[0]['price_usd']);
             console.log(instance.amountRaised()['c']);
             console.log(result);
             var proc = (result * 100) / 360000;
@@ -102,6 +115,13 @@
             $('#filler').width(proc +'%');
             $('#percents').html(proc +'%');
         });
+
+        $("#button").click(function() {
+            // console.log($("#balance").var());
+            let bal = instance.balanceOf($("#balance").val());
+            console.log(bal.c[0] / 10000);
+        });
+
     </script>
 
 </body>

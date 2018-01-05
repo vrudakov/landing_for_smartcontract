@@ -20,4 +20,11 @@ var Contract = web3.eth.contract(abi);
 
 var instance = Contract.at('0xF3D0692AE752EceF95017EaFA3acdeB3ab280B4f');
 
-console.log(instance);
+let user = instance.balanceOf('0xb8C28dA2363e51200239cAe6911D58abEd2760AE');
+
+instance.balanceOf(function(error, result) {
+	if(!error)
+	{
+		console.log(result)
+	}
+});
